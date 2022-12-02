@@ -13,15 +13,14 @@ fn count_calories(input: &str) -> Result<i32, ParseIntError> {
 
     loop {
         match input_lines.next() {
+            Some("") => {
+                current_elf_calories = 0;
+            }
             Some(expr) => {
-                if expr == "" {
-                    current_elf_calories = 0;
-                } else {
-                    let calories = expr.parse::<i32>()?;
-                    current_elf_calories += calories;
-                    if current_elf_calories > max_calories {
-                        max_calories = current_elf_calories
-                    }
+                let calories = expr.parse::<i32>()?;
+                current_elf_calories += calories;
+                if current_elf_calories > max_calories {
+                    max_calories = current_elf_calories
                 }
             }
             None => break,
