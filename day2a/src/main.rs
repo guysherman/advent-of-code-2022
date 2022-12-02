@@ -56,21 +56,21 @@ fn shape_to_points(shape: Option<char>) -> i32 {
 * 2 - 3 = -1 => LOSE
 * 1 - 3 = -2 => WIN
 *
-* diff = me - opponent
-* diff == -2 || diff == 1 => WIN
-* diff == 2 || diff == -1 => LOSE
-* diff == 0 => DRAW
+*         W       L       D        W        L
+* diff = -2      -1       0        1        2
+* +2   =  0       1       2        3        4
+* % 3  =  0       1       2        0        1
  *
  */
 
 fn outcome(opponent: i32, me: i32) -> Option<i32> {
-    let diff = me - opponent;
+    let diff = ((me - opponent) + 2) % 3;
 
     match diff {
-        -2 | 1 => Some(me + WIN),
-        0 => Some(me + DRAW),
-        2 | -1 => Some(me),
-        _i => None,
+        0 => Some(me + WIN),
+        1 => Some(me),
+        2 => Some(me + DRAW),
+        _ => None,
     }
 }
 
