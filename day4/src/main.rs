@@ -20,7 +20,7 @@ trait FullyContains<Rhs=Self> {
 
 
 impl FullyContains for RangeInclusive<u32> {
-    fn fully_contains(&self, rhs: &RangeInclusive<u32>) -> bool {
+    fn fully_contains(&self, rhs: &Self) -> bool {
         return self.start() <= rhs.start() && self.end() >= rhs.end();
     }
 }
