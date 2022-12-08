@@ -110,7 +110,7 @@ fn parse_move(move_string: &str) -> MoveInstruction {
 fn process_move<'a>(stacks: &mut Vec::<Vec::<&'a str>>, move_instruction: MoveInstruction) {
     let from = &mut stacks[move_instruction.from];
     let mut to_move = from.split_off(from.len() - move_instruction.count);
-    let to: &mut Vec<&str> = &mut stacks[move_instruction.to];
+    let to = &mut stacks[move_instruction.to];
     to.append(&mut to_move);
 }
 
