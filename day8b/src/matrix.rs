@@ -109,7 +109,7 @@ impl<'a, T: FromStr + Debug + Copy> MatrixColumnIterator<'a, T> {
 }
 
 impl<'a, T: FromStr + Debug + Copy> Iterator for MatrixColumnIterator<'a, T> {
-    type Item = T;
+    type Item = &'a T;
 
     fn next(&mut self) -> Option<Self::Item> {
         if self.back == 0 {
@@ -121,7 +121,7 @@ impl<'a, T: FromStr + Debug + Copy> Iterator for MatrixColumnIterator<'a, T> {
         let vec_index = self.hm.index_from_point(self.column_index, self.front);
         let value = self.hm.data.get(vec_index);
         let result = match value {
-            Some(val) => Some(*val),
+            Some(val) => Some(val),
             None => None,
         };
         self.front += 1;
@@ -130,7 +130,7 @@ impl<'a, T: FromStr + Debug + Copy> Iterator for MatrixColumnIterator<'a, T> {
 }
 
 impl<'a, T: FromStr + Debug + Copy> DoubleEndedIterator for MatrixColumnIterator<'a, T> {
-    fn next_back(&mut self) -> Option<T> {
+    fn next_back(&mut self) -> Option<&'a T> {
         if self.back == 0 {
             return None;
         }
@@ -141,7 +141,7 @@ impl<'a, T: FromStr + Debug + Copy> DoubleEndedIterator for MatrixColumnIterator
         let vec_index = self.hm.index_from_point(self.column_index, self.back - 1);
         let value = self.hm.data.get(vec_index);
         let result = match value {
-            Some(val) => Some(*val),
+            Some(val) => Some(val),
             None => None,
         };
         self.back -= 1;
@@ -202,11 +202,11 @@ mod tests {
     fn given_test_input_matrix_column_iterator_returns_correct_sequence() {
         let hm = Matrix::<u8>::from_string(&INPUT);
         let mut iter = hm.col_iter(2);
-        assert_eq!(iter.next(), Some(3));
-        assert_eq!(iter.next(), Some(5));
-        assert_eq!(iter.next(), Some(3));
-        assert_eq!(iter.next(), Some(5));
-        assert_eq!(iter.next(), Some(3));
+        assert_eq!(iter.next(), Some(&3));
+        assert_eq!(iter.next(), Some(&5));
+        assert_eq!(iter.next(), Some(&3));
+        assert_eq!(iter.next(), Some(&5));
+        assert_eq!(iter.next(), Some(&3));
         assert_eq!(iter.next(), None);
     }
 
@@ -214,11 +214,11 @@ mod tests {
     fn given_test_input_matrix_column_iterator_retruns_correct_back_sequence() {
         let hm = Matrix::<u8>::from_string(&INPUT);
         let mut iter = hm.col_iter(1);
-        assert_eq!(iter.next_back(), Some(5));
-        assert_eq!(iter.next_back(), Some(3));
-        assert_eq!(iter.next_back(), Some(5));
-        assert_eq!(iter.next_back(), Some(5));
-        assert_eq!(iter.next_back(), Some(0));
+        assert_eq!(iter.next_back(), Some(&5));
+        assert_eq!(iter.next_back(), Some(&3));
+        assert_eq!(iter.next_back(), Some(&5));
+        assert_eq!(iter.next_back(), Some(&5));
+        assert_eq!(iter.next_back(), Some(&0));
         assert_eq!(iter.next_back(), None);
     }
 
@@ -226,11 +226,11 @@ mod tests {
     fn given_test_input_matrix_column_iterator_retruns_correct_rev_sequence() {
         let hm = Matrix::<u8>::from_string(&INPUT);
         let mut iter = hm.col_iter(1).rev();
-        assert_eq!(iter.next(), Some(5));
-        assert_eq!(iter.next(), Some(3));
-        assert_eq!(iter.next(), Some(5));
-        assert_eq!(iter.next(), Some(5));
-        assert_eq!(iter.next(), Some(0));
+        assert_eq!(iter.next(), Some(&5));
+        assert_eq!(iter.next(), Some(&3));
+        assert_eq!(iter.next(), Some(&5));
+        assert_eq!(iter.next(), Some(&5));
+        assert_eq!(iter.next(), Some(&0));
         assert_eq!(iter.next(), None);
     }
 
@@ -259,8 +259,8 @@ mod tests {
         let hm = Matrix::<u8>::from_string(&INPUT);
         let mut iter = hm.up_iter(2, 2);
 
-        assert_eq!(iter.next(), Some(5));
-        assert_eq!(iter.next(), Some(3));
+        assert_eq!(iter.next(), Some(&5));
+        assert_eq!(iter.next(), Some(&3));
         assert_eq!(iter.next(), None);
 
     }
@@ -270,8 +270,8 @@ mod tests {
         let hm = Matrix::<u8>::from_string(&INPUT);
         let mut iter = hm.down_iter(2, 2);
 
-        assert_eq!(iter.next(), Some(5));
-        assert_eq!(iter.next(), Some(3));
+        assert_eq!(iter.next(), Some(&5));
+        assert_eq!(iter.next(), Some(&3));
         assert_eq!(iter.next(), None);
     }
 }

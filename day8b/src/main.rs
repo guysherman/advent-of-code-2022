@@ -44,45 +44,28 @@ fn scenic_score_for_point(hm: &Matrix<u8>, row_index: usize, column_index: usize
 
     let mut result = 1;
 
-    let mut count = 0;
-    for h in hm.left_iter(row_index, column_index) {
-        count += 1;
-        if *h >= height {
-            break;
-        }
-    }
-    result *= count;
-
-    count = 0;
-    for h in hm.right_iter(row_index, column_index) {
-        count += 1;
-        if *h >= height {
-            break;
-        }
-    }
-    result *= count;
-
-    count = 0;
-    for h in hm.up_iter(row_index, column_index) {
-        count += 1;
-        if h >= height {
-            break;
-        }
-    }
-    result *= count;
-    
-    count = 0;
-    for h in hm.down_iter(row_index, column_index) {
-        count += 1;
-        if h >= height {
-            break;
-        }
-    }
-    result *= count;
+    result *= count_trees_in_direction(height, hm.left_iter(row_index, column_index));
+    result *= count_trees_in_direction(height, hm.right_iter(row_index, column_index));
+    result *= count_trees_in_direction(height, hm.down_iter(row_index, column_index));
+    result *= count_trees_in_direction(height, hm.up_iter(row_index, column_index));
 
     result
 }
 
+fn count_trees_in_direction<'a, I>(height: u8, dir_iter: I) -> usize
+where
+ I: Iterator<Item = &'a u8>
+{
+    let mut count = 0usize;
+    for h in dir_iter {
+        count += 1;
+        if *h >= height {
+            break
+        }
+    }
+
+    count
+}
 
 
 
